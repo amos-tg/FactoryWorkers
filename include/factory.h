@@ -1,13 +1,15 @@
+#ifndef FACTORY_H
+#define FACTORY_H
+
 #include <string>
 #include <chrono>
 
 class employee
 {
-  unsigned id_m;
   std::string name_m;
   std::chrono::year_month_day date_hired_m;
+  unsigned id_m;
 public:
-  employee();
   employee(
       unsigned id, std::string name, std::chrono::year_month_day date_hired);
 
@@ -34,13 +36,13 @@ public:
 };
 
 
-class productionWorker: private employee
+class productionWorker: public employee
 {
 public:
   // directions say day = 1, night = 2
   enum shift { DAY = 1, NIGHT };
 
-  productionWorker(shift shift, unsigned hourly_pay);
+  productionWorker(shift shift, unsigned hourly_pay, employee emp);
 
   inline shift getShift(void) const 
   { return shift_m; }
@@ -60,12 +62,12 @@ private:
   unsigned hourly_pay_m;
 };
 
-class shiftSupervisor: private employee
+class shiftSupervisor: public employee
 {
   unsigned annual_salary_m;
   unsigned bonus_m;
 public:
-  shiftSupervisor();
+  shiftSupervisor(unsigned annual_salary, unsigned bonus, employee emp);
 
   inline unsigned getAnnualSalary(void) const
   { return annual_salary_m; }
@@ -82,13 +84,15 @@ public:
   void printShiftSupervisor() const;
 };
 
-class teamLeader: private productionWorker
+class teamLeader: public productionWorker
 {
   unsigned monthly_bonus_m;
   unsigned req_train_hours_m;
   unsigned train_hours_m;
 public:
-  teamLeader();
+  teamLeader(
+    unsigned monthly_bonus, unsigned req_train_hr, 
+    unsigned train_hours, productionWorker prod_worker);
 
   inline unsigned getMonthlyBonus(void) const
   { return monthly_bonus_m; }
@@ -110,3 +114,5 @@ public:
 
   void printTeamLeader(void) const;
 };
+
+#endif
