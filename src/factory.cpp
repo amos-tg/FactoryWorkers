@@ -14,10 +14,8 @@ void employee::printEmployee(void) const
     << "Date Hired: " << date_hired_m;
 }
 
-
 productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
   : shift_m(shift), hourly_pay_m(hr_pay), employee(emp) {}
-
 
 void productionWorker::printProductionWorker(void) const
 {
@@ -30,11 +28,9 @@ void productionWorker::printProductionWorker(void) const
   cout << "Hourly Pay: " << hourly_pay_m;
 }
 
-
 shiftSupervisor::shiftSupervisor(
   unsigned annual_pay, unsigned bonus, employee emp)
     : annual_salary_m(annual_pay), bonus_m(bonus), employee(emp) {} 
-
 
 void shiftSupervisor::printShiftSupervisor() const
 {
@@ -48,4 +44,12 @@ teamLeader::teamLeader(
   unsigned train_hours, productionWorker prod_worker)
     : monthly_bonus_m(monthly_bonus), req_train_hours_m(req_train_hr),
       train_hours_m(train_hours), productionWorker(prod_worker) {}
+
+void teamLeader::printTeamLeader(void) const
+{
+  printProductionWorker();
+  cout << "Monthly Bonus: " << monthly_bonus_m
+    << "Required Training Hours: " << req_train_hours_m
+    << "Completed Training Hours: " << train_hours_m;
+}
 
