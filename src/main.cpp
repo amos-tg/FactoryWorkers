@@ -20,32 +20,38 @@ void constructor_chaining_tests(void);
 
 int main(void) 
 {
-  void employee_tests();
-  cout << '\n';
-  void production_worker_tests();
-  cout << '\n';
-  void shift_supervisor_tests();
-  cout << '\n';
-  void team_leader_tests();
-  cout << '\n';
-  void constructor_chaining_tests();
+  employee_tests();
+  //cout << '\n';
+  //void production_worker_tests();
+  //cout << '\n';
+  //void shift_supervisor_tests();
+  //cout << '\n';
+  //void team_leader_tests();
+  //cout << '\n';
+  //void constructor_chaining_tests();
   cout << endl;
 
   return 0;
 }
 
 
-void employee_tests()
+void employee_tests(void)
 {
+  cout << EMPLOYEE_TESTS << '\n';
+
+  /// tests object creation via constructor  
   unsigned id { 499 }; 
   string name { "Jarmenius Shartruese" };
   chrono::year_month_day date_hired { 
-      chrono::year { 1999 }, chrono::month { 20 }, chrono::day { 1 } };
+      chrono::year { 1999 }, chrono::month { 11 }, chrono::day { 1 } };
   employee emp { id, name, date_hired }; 
   assert(emp.getId() == id);
   assert(emp.getName() == name);
   assert(emp.getDateHired() == date_hired);
+  /// for validating the output of printEmployee
+  emp.printEmployee();
 
+  /// tests the setters 
   id = 600; 
   name = "Bardoushtae Chourdle";
   date_hired = chrono::year_month_day { 
@@ -56,6 +62,8 @@ void employee_tests()
   assert(emp.getId() == id);
   assert(emp.getName() == name);
   assert(emp.getDateHired() == date_hired);
-
+  /// for validating the output of printEmployee
   emp.printEmployee();
+  
+  cout << TEST_PASSED << endl;
 }
