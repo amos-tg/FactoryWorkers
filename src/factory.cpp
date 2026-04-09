@@ -12,6 +12,7 @@ void employee::printEmployee(void) const
   cout << "Name: " << name_m 
     << "Employee Number: " << id_m
     << "Date Hired: " << date_hired_m;
+  cout.flush();
 }
 
 productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
@@ -26,6 +27,8 @@ void productionWorker::printProductionWorker(void) const
   else cout << "Nighttime";
 
   cout << "Hourly Pay: " << hourly_pay_m;
+
+  cout.flush();
 }
 
 shiftSupervisor::shiftSupervisor(
@@ -37,6 +40,7 @@ void shiftSupervisor::printShiftSupervisor() const
   printEmployee();
   cout << "Annual Salary: " << annual_salary_m
     << "Bonus: " << bonus_m;
+  cout.flush();
 }
 
 teamLeader::teamLeader(
@@ -51,5 +55,5 @@ void teamLeader::printTeamLeader(void) const
   cout << "Monthly Bonus: " << monthly_bonus_m
     << "Required Training Hours: " << req_train_hours_m
     << "Completed Training Hours: " << train_hours_m;
+  cout.flush();
 }
-
