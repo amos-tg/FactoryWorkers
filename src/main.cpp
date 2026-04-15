@@ -11,6 +11,7 @@ const char
   *SHIFT_SUPERVISOR_TESTS { "Test (shiftSupervisor class): " },
   *TEAM_LEADER_TESTS { "Test (teamLeader class): " };
 
+/// class respective tests (factory.h encompassing)
 void employee_tests(void);
 void production_worker_tests(void);
 void shift_supervisor_tests(void);
@@ -30,35 +31,42 @@ int main(void)
   return 0;
 }
 
-
 void employee_tests(void)
 {
   cout << EMPLOYEE_TESTS << "\nEmployee 1:\n";
-  /// tests object creation via constructor  
+
   unsigned id { 499 }; 
   string name { "Jarmenius Shartruese" };
   chrono::year_month_day date_hired { 
       chrono::year { 1999 }, chrono::month { 11 }, chrono::day { 1 } };
+
   employee emp { id, name, date_hired }; 
+
+  /// tests constructor behavior
   assert(emp.getId() == id);
   assert(emp.getName() == name);
   assert(emp.getDateHired() == date_hired);
-  /// for validating the output of printEmployee
+
+  /// visually validated output of printEmployee
   emp.printEmployee();
 
   cout << "\nEmployee 2 \n";
-  /// tests the setters 
+
   id = 600; 
   name = "Bardoushtae Chourdle";
   date_hired = chrono::year_month_day { 
     chrono::year { 2000 }, chrono::month { 10 }, chrono::day { 3 } };
+
   emp.setId(id);
   emp.setName(name);
   emp.setDateHired(date_hired);  
+
+  /// validates the setters
   assert(emp.getId() == id);
   assert(emp.getName() == name);
   assert(emp.getDateHired() == date_hired);
-  /// for validating the output of printEmployee
+
+  /// visually validated output of printEmployee
   emp.printEmployee();
   
   cout << TEST_PASSED << endl;
@@ -76,13 +84,15 @@ void production_worker_tests(void)
 
   employee emp { id, name, date_hired }; 
 
-  // create two production worker obj.s
+  // create two production workers
   productionWorker 
     work1 { productionWorker::NIGHT, 15, emp }, 
     work2 { productionWorker::DAY, 25, emp };
 
+  // validate the prod workers visually 
   cout << "\nProduction Worker 1:\n";
   work1.printProductionWorker();
+
   cout << "\nProduction Worker 2:\n";
   work2.printProductionWorker();
 
@@ -103,7 +113,7 @@ void shift_supervisor_tests(void)
 
   shiftSupervisor boss { 78'000, 2000, emp };
 
-  // verifies hierarchy's data prints correctly.
+  // verify hierarchy's data prints correctly.
   boss.printShiftSupervisor();
 
   cout << TEST_PASSED << endl;
@@ -119,11 +129,11 @@ void team_leader_tests(void)
   chrono::year_month_day date_hired { 
       chrono::year { 1999 }, chrono::month { 11 }, chrono::day { 1 } };
 
-  employee emp { id, name, date_hired }; 
+  // thought this would be preferable, seems similarly ug to big arg list
+  teamLeader boss { 500, 30, 29, 
+    productionWorker { productionWorker::NIGHT, 25, 
+      employee { id, name, date_hired } } }; 
 
-  productionWorker base { productionWorker::NIGHT, 25, emp };
-
-  teamLeader boss { 500, 30, 29, base };
 
   // verify all the data prints correctly
   boss.printTeamLeader();
