@@ -9,10 +9,10 @@ employee::employee(unsigned id, string name, chrono::year_month_day date_hired)
 
 void employee::printEmployee(void) const
 {
+  // print all the employee data members 
   cout << "Name: " << name_m << '\n'
     << "Employee Number: " << id_m << '\n'
     << "Date Hired: " << date_hired_m << endl;
-  ;
 }
 
 productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
@@ -22,11 +22,12 @@ void productionWorker::printProductionWorker(void) const
 {
   printEmployee(); 
 
+  // convert the shift enum to a string and print
   cout << "Shift: "; 
   if (shift_m == 1) cout << "Daytime";
   else cout << "Nighttime";
   cout << '\n';
-
+  
   cout << "Hourly Pay: " << hourly_pay_m << endl;
 }
 
@@ -37,6 +38,8 @@ shiftSupervisor::shiftSupervisor(
 void shiftSupervisor::printShiftSupervisor() const
 {
   printEmployee();
+
+  // print all the shiftSupervisor data
   cout << "Annual Salary: " << annual_salary_m << '\n'
     << "Bonus: " << bonus_m << endl;
 }
@@ -50,6 +53,8 @@ teamLeader::teamLeader(
 void teamLeader::printTeamLeader(void) const
 {
   printProductionWorker();
+
+  // prints all the production worker related data
   cout << "Monthly Bonus: " << monthly_bonus_m << '\n'
     << "Required Training Hours: " << req_train_hours_m << '\n'
     << "Completed Training Hours: " << train_hours_m << endl;
