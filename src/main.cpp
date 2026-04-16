@@ -109,9 +109,8 @@ void shift_supervisor_tests(void)
   chrono::year_month_day date_hired { 
       chrono::year { 1999 }, chrono::month { 11 }, chrono::day { 1 } };
 
-  employee emp { id, name, date_hired }; 
-
-  shiftSupervisor boss { 78'000, 2000, emp };
+  shiftSupervisor boss { 78'000, 2000, 
+    employee { id, name, date_hired } }; 
 
   // verify hierarchy's data prints correctly.
   boss.printShiftSupervisor();
@@ -129,11 +128,10 @@ void team_leader_tests(void)
   chrono::year_month_day date_hired { 
       chrono::year { 1999 }, chrono::month { 11 }, chrono::day { 1 } };
 
-  // thought this would be preferable, seems similarly ug to big arg list
+  // construct the boss
   teamLeader boss { 500, 30, 29, 
     productionWorker { productionWorker::NIGHT, 25, 
       employee { id, name, date_hired } } }; 
-
 
   // verify all the data prints correctly
   boss.printTeamLeader();
