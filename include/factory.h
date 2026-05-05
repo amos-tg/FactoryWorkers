@@ -17,7 +17,9 @@ public:
   /// name: the employee's name
   /// date_hired: the date on which the employee was hired
   ///
-  /// constructs an employee object 
+  /// constructs an employee object. Throws an invalidEmployeeNumber
+  /// exception if the id argument passed isn't within the inclusive range 0 to
+  /// 9999. 
   employee(
       unsigned id, std::string name, std::chrono::year_month_day date_hired);
 
@@ -33,9 +35,9 @@ public:
   inline std::chrono::year_month_day getDateHired(void) const
   { return date_hired_m; };
 
-  /// sets the employee's identification number
-  /// throws an invalidEmployeeNumber exception if the id argument passed isn't
-  /// within the inclusive range 0 to 9999.
+  /// Sets the employee's identification number. Throws an invalidEmployeeNumber
+  /// exception if the id argument passed isn't within the inclusive range 0 to
+  /// 9999.
   void setId(unsigned id);
 
   /// sets the employee's name
@@ -49,6 +51,7 @@ public:
   /// prints all employee information
   void printEmployee(void) const;
 private:
+  /// returns true if the passed id is between 0 && 9999, else returns false.
   static bool isIdValid(unsigned id);
 };
 
@@ -76,7 +79,9 @@ public:
   /// hourly_pay: the amount the worker is payed per hour
   /// emp: the employee becoming a productionWorker
   ///
-  /// constructs a productionWorker 
+  /// constructs a productionWorker. Throws invalidShift if the shift passed 
+  /// is not DAY=1 or NIGHT=2 from productionWorker::shift. Throws 
+  /// invalidPayRate if the hourly_pay passed is negative.
   productionWorker(shift shift, unsigned hourly_pay, employee emp);
 
   /// returns the shift of the productionWorker
@@ -87,13 +92,13 @@ public:
   inline unsigned getHourlyPay(void) const
   { return hourly_pay_m; }
 
-  /// sets the shift the productionWorker covers
-  inline void setShift(shift shift)
-  { shift_m = shift; }
+  /// sets the shift the productionWorker covers, throws invalidShift if the
+  /// shift passed is not DAY=1 or NIGHT=2 from productionWorker::shift.
+  void setShift(shift shift);
 
-  /// sets the hourly pay of the productionWorker
-  inline void setHourlyPay(unsigned hourly_pay)
-  { hourly_pay_m = hourly_pay; }
+  /// sets the hourly pay of the productionWorker, throws invalidPayRate if the
+  /// hourly_pay passed is negative.
+  void setHourlyPay(unsigned hourly_pay);
 
   /// prints all the productionWorkers data, including the employee data 
   void printProductionWorker(void) const;
@@ -101,10 +106,16 @@ private:
   // shift not declared before 1st pub section. so vars are down here
   shift shift_m;
   unsigned hourly_pay_m;
+
+  /// returns true if shift is DAY=1, or NIGHT=2, else false is returned.
+  static bool isShiftValid(productionWorker::shift shift);
+
+  /// returns true if hr_pay isn't negative, else false is returned. 
+  static bool isHourlyPayValid(unsigned hr_pay);
 };
 
 class invalidShift: public std::exception {
-  productionWorker::shift shift;
+  productionWorker::shift shift_m;
   std::string msg;
 public:
   invalidShift(productionWorker::shift shift);
@@ -113,7 +124,7 @@ public:
   { return msg.c_str(); }
 
   inline productionWorker::shift getShift(void) const
-  { return shift; }
+  { return shift_m; }
 }; 
 
 class invalidPayRate: public std::exception {

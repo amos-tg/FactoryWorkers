@@ -40,10 +40,49 @@ void employee::printEmployee(void) const
 
 invalidEmployeeNumber::invalidEmployeeNumber(unsigned emp_id) 
   : id_m(emp_id), msg(
-    format("Error: invalidEmployeeNumber: {}, out of range [0,9999]", emp_id)) {}
+    format(
+      "Error: invalidEmployeeNumber: id: {}, out of range [0,9999]",
+      emp_id)) {}
 
 productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
-  : shift_m(shift), hourly_pay_m(hr_pay), employee(emp) {}
+  : shift_m(shift), hourly_pay_m(hr_pay), employee(emp) 
+{
+  setHourlyPay(hr_pay);
+  setShift(shift);
+}
+
+void productionWorker::setHourlyPay(unsigned hr_pay)
+{
+  if (isHourlyPayValid(hr_pay))
+    hourly_pay_m = hr_pay;
+  else 
+    throw invalidPayRate(hr_pay);
+}
+
+void productionWorker::setShift(productionWorker::shift shift)
+{
+  if (isShiftValid(shift))
+    shift_m = shift;
+  else
+    throw invalidShift(shift);
+}
+
+bool isShiftValid(productionWorker::shift shift)
+{
+  if (shift == productionWorker::shift::DAY || 
+      shift == productionWorker::shift::NIGHT)
+    return true;
+  else 
+    return false;
+}
+
+bool isHourlyPayValid(unsigned hr_pay)
+{
+  if (hr_pay >= 0)
+    return true; 
+  else 
+    return false;
+}
 
 void productionWorker::printProductionWorker(void) const
 {
@@ -57,6 +96,16 @@ void productionWorker::printProductionWorker(void) const
   
   cout << "Hourly Pay: " << hourly_pay_m << endl;
 }
+
+invalidShift::invalidShift(productionWorker::shift shift)
+  : shift_m(shift), msg(
+    format(
+      "Error: invalidShift: {} != (DAY=1) or (NIGHT=2)",
+      static_cast<int>(shift))) {}
+
+invalidPayRate::invalidPayRate(unsigned hrly_pay)
+  : hourly_pay_m(hrly_pay), msg(
+    format("Error: invalidPayRate: hourly pay: {} is less than 0", hrly_pay)) {}
 
 shiftSupervisor::shiftSupervisor(
   unsigned annual_pay, unsigned bonus, employee emp)
