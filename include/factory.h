@@ -52,14 +52,18 @@ private:
   static bool isIdValid(unsigned id);
 };
 
-class invalidEmployeeNumber: public std::out_of_range
+class invalidEmployeeNumber: public std::exception
 {
-  unsigned emp_id;
+  unsigned id_m;
+  std::string msg;
 public:
   invalidEmployeeNumber(unsigned emp_id);
 
-  inline unsigned getId(void)
-  { return emp_id; }
+  const char* what() const noexcept override 
+  { return msg.c_str(); };
+
+  inline unsigned getId(void) const
+  { return id_m; }
 };
 
 class productionWorker: public employee
@@ -97,6 +101,32 @@ private:
   // shift not declared before 1st pub section. so vars are down here
   shift shift_m;
   unsigned hourly_pay_m;
+};
+
+class invalidShift: public std::exception {
+  productionWorker::shift shift;
+  std::string msg;
+public:
+  invalidShift(productionWorker::shift shift);
+
+  inline const char* what() const noexcept override
+  { return msg.c_str(); }
+
+  inline productionWorker::shift getShift(void) const
+  { return shift; }
+}; 
+
+class invalidPayRate: public std::exception {
+  unsigned hourly_pay_m;
+  std::string msg;
+public:
+  invalidPayRate(unsigned hrly_pay);
+
+  inline const char* what() const noexcept override
+  { return msg.c_str(); }
+  
+  inline unsigned getHourlyPay(void) const 
+  { return hourly_pay_m; }
 };
 
 class shiftSupervisor: public employee

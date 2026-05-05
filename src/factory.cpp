@@ -1,13 +1,16 @@
 #include "factory.h"
 #include <string>
 #include <iostream>
+#include <format>
 
 using namespace std;
 
 employee::employee(unsigned id, string name, chrono::year_month_day date_hired) 
   : name_m(name), date_hired_m(date_hired) 
 {
-  if (id < 0 || id > 9999)
+  if (isIdValid(id))
+    id_m = id;
+  else 
     throw invalidEmployeeNumber(id);
 }
 
@@ -35,10 +38,9 @@ void employee::printEmployee(void) const
     << "Date Hired: " << date_hired_m << endl;
 }
 
-invalidEmployeeNumber::invalidEmployeeNumber(unsigned emp_id)
-  : out_of_range(
-    string("Index: ") + to_string(emp_id) 
-    + string(" is out of the range [0, 9999]")) {}
+invalidEmployeeNumber::invalidEmployeeNumber(unsigned emp_id) 
+  : id_m(emp_id), msg(
+    format("Error: invalidEmployeeNumber: {}, out of range [0,9999]", emp_id)) {}
 
 productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
   : shift_m(shift), hourly_pay_m(hr_pay), employee(emp) {}
