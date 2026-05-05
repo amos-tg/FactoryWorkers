@@ -9,17 +9,35 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add all source files
-file(GLOB SOURCES "src/*.cpp")
+# --------------
+# ---------- LIB
 
-# Add the executable
-add_executable(${PROJECT_NAME}
-    ${SOURCES}
+# Add lib source files
+file(GLOB LIB_SOURCE "lib/src/*.cpp")
+
+add_library(factory STATIC ${LIB_SOURCE})
+
+target_include_directories(factory
+  PUBLIC
+    lib/include
 )
 
-# Add include directory
-target_include_directories(${PROJECT_NAME}
-    PRIVATE
-        ${PROJECT_SOURCE_DIR}/include
-)
+# ----------------
+# ---------- TESTS
 
+file(GLOB LIB_TESTS "lib/tests/*.cpp")
+
+# Add the tests program executable
+add_executable(tests ${LIB_TESTS})
+
+target_link_libraries(tests PRIVATE factory)
+
+# -------------------------------
+# ----------- MENU DRIVEN PROGRAM
+
+file(GLOB MAIN_SOURCES "src/*.cpp")
+
+# Add the menu driven program executable
+add_executable(${PROJECT_NAME} ${MAIN_SOURCES})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE factory) 

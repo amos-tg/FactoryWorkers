@@ -22,7 +22,7 @@ void employee::setId(unsigned id)
     throw invalidEmployeeNumber(id);
 }
 
-bool isIdValid(unsigned id)
+bool employee::isIdValid(unsigned id)
 {
   if (id < 0 || id > 9999)
     return false;
@@ -67,7 +67,7 @@ void productionWorker::setShift(productionWorker::shift shift)
     throw invalidShift(shift);
 }
 
-bool isShiftValid(productionWorker::shift shift)
+bool productionWorker::isShiftValid(productionWorker::shift shift)
 {
   if (shift == productionWorker::shift::DAY || 
       shift == productionWorker::shift::NIGHT)
@@ -76,7 +76,7 @@ bool isShiftValid(productionWorker::shift shift)
     return false;
 }
 
-bool isHourlyPayValid(unsigned hr_pay)
+bool productionWorker::isHourlyPayValid(unsigned hr_pay)
 {
   if (hr_pay >= 0)
     return true; 
