@@ -3,6 +3,7 @@
 
 #include <string>
 #include <chrono>
+#include <exception>
 
 // factory worker classes, all of the types of employees at a factory.
 
@@ -33,8 +34,9 @@ public:
   { return date_hired_m; };
 
   /// sets the employee's identification number
-  inline void setId(unsigned id)
-  { id_m = id; }
+  /// throws an invalidEmployeeNumber exception if the id argument passed isn't
+  /// within the inclusive range 0 to 9999.
+  void setId(unsigned id);
 
   /// sets the employee's name
   inline void setName(std::string name)
@@ -46,6 +48,18 @@ public:
 
   /// prints all employee information
   void printEmployee(void) const;
+private:
+  static bool isIdValid(unsigned id);
+};
+
+class invalidEmployeeNumber: public std::out_of_range
+{
+  unsigned emp_id;
+public:
+  invalidEmployeeNumber(unsigned emp_id);
+
+  inline unsigned getId(void)
+  { return emp_id; }
 };
 
 class productionWorker: public employee

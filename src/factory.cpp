@@ -5,7 +5,27 @@
 using namespace std;
 
 employee::employee(unsigned id, string name, chrono::year_month_day date_hired) 
-  : id_m(id), name_m(name), date_hired_m(date_hired) {}
+  : name_m(name), date_hired_m(date_hired) 
+{
+  if (id < 0 || id > 9999)
+    throw invalidEmployeeNumber(id);
+}
+
+void employee::setId(unsigned id)
+{
+  if (isIdValid(id))
+    id_m = id;
+  else 
+    throw invalidEmployeeNumber(id);
+}
+
+bool isIdValid(unsigned id)
+{
+  if (id < 0 || id > 9999)
+    return false;
+  else
+    return true;
+}
 
 void employee::printEmployee(void) const
 {
@@ -14,6 +34,11 @@ void employee::printEmployee(void) const
     << "Employee Number: " << id_m << '\n'
     << "Date Hired: " << date_hired_m << endl;
 }
+
+invalidEmployeeNumber::invalidEmployeeNumber(unsigned emp_id)
+  : out_of_range(
+    string("Index: ") + to_string(emp_id) 
+    + string(" is out of the range [0, 9999]")) {}
 
 productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
   : shift_m(shift), hourly_pay_m(hr_pay), employee(emp) {}
