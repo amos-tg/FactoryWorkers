@@ -194,6 +194,8 @@ public:
     unsigned monthly_bonus, unsigned req_train_hr, 
     unsigned train_hours, productionWorker prod_worker);
 
+  teamLeader(productionWorker pr_wkr): productionWorker(pr_wkr) {}
+
   /// returns the monthly pay bonus
   inline unsigned getMonthlyBonus(void) const
   { return monthly_bonus_m; }

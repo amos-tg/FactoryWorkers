@@ -7,11 +7,13 @@ using namespace std;
 
 void newEmployee(void);
 
-void addProdWorker(void);
+employee addEmployee(void);
 
-void addShiftSupervisor(void);
+productionWorker addProdWorker(void);
 
-void addTeamLeader(void);
+shiftSupervisor addShiftSupervisor(void);
+
+teamLeader addTeamLeader(void);
 
 void sscroll(void);
 
@@ -95,15 +97,15 @@ void newEmployee(void)
     switch (static_cast<employeeType>(opt))
     {
     case employeeType::PRODUCTION_WORKER:
-      addProdWorker();
+      addProdWorker().printProductionWorker();
       return;
 
     case employeeType::SHIFT_SUPERVISOR:
-      addShiftSupervisor();
+      addShiftSupervisor().printShiftSupervisor();
       return;
 
     case employeeType::TEAM_LEADER:
-      addTeamLeader();
+      addTeamLeader().printTeamLeader();
       return;
 
     case employeeType::EXIT:
@@ -178,7 +180,7 @@ employee addEmployee(void)
   return emp;
 }
 
-void addProdWorker(void)
+productionWorker addProdWorker(void)
 {
   employee emp { addEmployee() };
   productionWorker pr_wkr { emp };
@@ -220,15 +222,36 @@ void addProdWorker(void)
     break;
   }
 
-  pr_wkr.printProductionWorker();
+  return pr_wkr;
 }
 
-void addShiftSupervisor(void)
+shiftSupervisor addShiftSupervisor(void)
 {
   sscroll();   
 
   employee emp { addEmployee() };
-  shiftSupervisor { emp };
+  shiftSupervisor visor { emp };
+
+  visor.setAnnualSalary(query<unsigned>("Input Employee Annual Salary: "));
+  visor.setBonus(query<unsigned>("Input Employee Annual Bonus: "));
+
+  return visor;
+}
+
+teamLeader addTeamLeader(void)
+{
+  teamLeader tl { addProdWorker() };
+
+  tl.setMonthlyBonus(
+    query<unsigned>("Input Employee Monthly Bonus: "));
+
+  tl.setReqTrainingHours(
+    query<unsigned>("Input Employee Required Training Hours: "));
+
+  tl.setTrainingHours(
+    query<unsigned>("Input Employee Completed Training Hours: "));
+
+  return tl;
 }
 
 /// prints 30 lines of whitespace to mimic the screen being wiped. Tried to get
