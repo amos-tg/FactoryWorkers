@@ -84,6 +84,8 @@ public:
   /// invalidPayRate if the hourly_pay passed is negative.
   productionWorker(shift shift, unsigned hourly_pay, employee emp);
 
+  productionWorker(employee emp): employee(emp) {}
+
   /// returns the shift of the productionWorker
   inline shift getShift(void) const 
   { return shift_m; }
@@ -151,6 +153,8 @@ public:
   ///
   /// constructs a shiftSupervisor object
   shiftSupervisor(unsigned annual_salary, unsigned annual_bonus, employee emp);
+
+  shiftSupervisor(employee emp): employee(emp) {}
 
   /// returns the annual salary
   inline unsigned getAnnualSalary(void) const

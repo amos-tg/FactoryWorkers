@@ -1,6 +1,7 @@
 #include "factory.h"
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
 
 using namespace std;
 
@@ -13,8 +14,6 @@ void addShiftSupervisor(void);
 void addTeamLeader(void);
 
 void sscroll(void);
-
-const char QUIT { 'q' };
 
 const string main_menu = 
 R"(Factory Employee Manager:
@@ -40,8 +39,7 @@ int main(void)
 
     if (!cin) 
     {
-      cin.ignore();
-      cin.clear();
+      cin.ignore().clear();
       continue;
     }
 
@@ -90,8 +88,7 @@ void newEmployee(void)
 
     if (!cin)
     {
-      cin.ignore();
-      cin.clear();
+      cin.ignore().clear();
       continue;
     }
 
@@ -116,6 +113,97 @@ void newEmployee(void)
       continue;
     }
   }
+}
+
+/// T is the type queried for
+template<typename T>
+T query(string msg)
+{
+  T opt;
+  while (true)
+  {
+    cout << msg;
+    cout.flush();
+
+    cin >> opt;
+    if (!cin)
+    {
+      cin.ignore().clear();
+      continue;
+    }
+    else 
+    {
+      cout << endl;
+      return opt;
+    }
+  }
+}
+
+employee addEmployee(void) 
+{
+  sscroll();
+
+  string name { query<string>("Input Employee Name: ") };
+  unsigned emp_id { query<unsigned>("Input Employee Id (Numeric): ") };
+  chrono::day day { 
+    query<unsigned>("Input Employee Hiring Date Day Number: ") };
+  chrono::year year { 
+    query<int>("Input Employee Hiring Date Year Number: ") };
+  chrono::month month { 
+    query<unsigned>("Input Employee Hiring Date Month Number: ") };
+  chrono::year_month_day ymd { year, month, day };
+
+  return employee { emp_id, name, ymd };
+}
+
+void addProdWorker(void)
+{
+  employee emp { addEmployee() };
+  productionWorker pr_wkr { emp };
+
+  while (true)
+  {
+    try 
+    {
+      productionWorker::shift shift {
+        static_cast<productionWorker::shift>(
+          query<unsigned>("Input Employee Shift, (Day=1 or Night=2): ")) };
+
+      pr_wkr.setShift(shift);
+    } 
+    catch (const invalidShift& err) 
+    {
+      cerr << err.what() << endl;
+      continue;
+    }
+
+    break;
+  }
+
+  while (true)
+  {
+    try
+    {
+      unsigned hr_pay {
+        query<unsigned>("Input Employee Hourly Pay: ") };
+
+      pr_wkr.setHourlyPay(hr_pay);
+    }
+    catch (const invalidPayRate& err)
+    {
+      cerr << err.what() << endl;
+      continue;
+    }
+
+    break;
+  }
+
+  pr_wkr.printProductionWorker();
+}
+
+void addShiftSupervisor(void)
+{
+   
 }
 
 /// prints 30 lines of whitespace to mimic the screen being wiped. Tried to get
