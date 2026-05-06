@@ -23,6 +23,8 @@ public:
   employee(
       unsigned id, std::string name, std::chrono::year_month_day date_hired);
 
+  employee(void) = default;
+
   /// returns the employee's identification number
   inline unsigned getId(void) const
   { return id_m; }

@@ -117,7 +117,7 @@ void newEmployee(void)
 
 /// T is the type queried for
 template<typename T>
-T query(string msg)
+T query(const char* msg)
 {
   T opt;
   while (true)
@@ -141,19 +141,41 @@ T query(string msg)
 
 employee addEmployee(void) 
 {
+  employee emp {};
+
   sscroll();
 
+  while (true)
+  {
+    try 
+    {
+      emp.setId(query<unsigned>("Input Employee Id (Numeric): "));
+    }
+    catch (const invalidEmployeeNumber& err)
+    {
+      cerr << err.what() << endl;
+      continue;
+    }
+
+    break;
+  }
+
   string name { query<string>("Input Employee Name: ") };
-  unsigned emp_id { query<unsigned>("Input Employee Id (Numeric): ") };
+  emp.setName(name);
+
   chrono::day day { 
     query<unsigned>("Input Employee Hiring Date Day Number: ") };
+
   chrono::year year { 
     query<int>("Input Employee Hiring Date Year Number: ") };
+  
   chrono::month month { 
     query<unsigned>("Input Employee Hiring Date Month Number: ") };
-  chrono::year_month_day ymd { year, month, day };
 
-  return employee { emp_id, name, ymd };
+  chrono::year_month_day ymd { year, month, day };
+  emp.setDateHired(ymd);
+
+  return emp;
 }
 
 void addProdWorker(void)
@@ -203,7 +225,10 @@ void addProdWorker(void)
 
 void addShiftSupervisor(void)
 {
-   
+  sscroll();   
+
+  employee emp { addEmployee() };
+  shiftSupervisor { emp };
 }
 
 /// prints 30 lines of whitespace to mimic the screen being wiped. Tried to get
