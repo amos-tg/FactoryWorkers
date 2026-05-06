@@ -68,6 +68,24 @@ void employee_tests(void)
 
   /// visually validated output of printEmployee
   emp.printEmployee();
+
+  // test invalid employee numbers exception throwing
+  bool caught { false };
+  try { emp.setId(10'000); }
+  catch (const invalidEmployeeNumber& err)
+  {
+    caught = true;
+  }
+  assert(caught == true);
+  caught = false;
+
+  try { emp.setId(-1); }
+  catch (const invalidEmployeeNumber& err)
+  {
+    caught = true;
+    cerr << "Example Error Message: " << err.what() << endl;
+  }
+  assert(caught == true);
   
   cout << TEST_PASSED << endl;
 }
@@ -95,6 +113,26 @@ void production_worker_tests(void)
 
   cout << "\nProduction Worker 2:\n";
   work2.printProductionWorker();
+
+  // tests invalidShift exception
+  bool caught { false };
+  try { work1.setShift(static_cast<productionWorker::shift>(-1)); }
+  catch (const invalidShift& err) 
+  { 
+    caught = true;
+    cerr << "Example Error Message: " << err.what() << endl;
+  }
+  assert(caught);
+
+  // tests invalidPayRate exception
+  caught = false;
+  try { work1.setHourlyPay(-1); }
+  catch (const invalidPayRate& err) 
+  { 
+    caught = true;
+    cerr << "Example Error Message: " << err.what() << endl;
+  }
+  assert(caught);
 
   cout << TEST_PASSED << endl;
 }

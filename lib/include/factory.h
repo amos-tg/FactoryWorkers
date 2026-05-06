@@ -64,9 +64,11 @@ class invalidEmployeeNumber: public std::exception
 public:
   invalidEmployeeNumber(unsigned emp_id);
 
+  /// returns an error message c-string
   const char* what() const noexcept override 
   { return msg.c_str(); };
 
+  /// returns the error causing employee id number
   inline unsigned getId(void) const
   { return id_m; }
 };
