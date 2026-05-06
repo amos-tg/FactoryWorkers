@@ -26,7 +26,7 @@ R"(Factory Employee Manager:
   (input 1 or 2) : )";
 
 // exit is defined in multiple menus so namespacing from enum class is needed
-enum class menuOpt { NEW = 1, PRINT, EXIT };
+enum class menuOpt { NEW = 1, EXIT };
 
 int main(void) 
 {
@@ -41,7 +41,8 @@ int main(void)
 
     if (!cin) 
     {
-      cin.ignore().clear();
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
       continue;
     }
 
@@ -90,7 +91,8 @@ void newEmployee(void)
 
     if (!cin)
     {
-      cin.ignore().clear();
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
       continue;
     }
 
@@ -128,9 +130,12 @@ T query(const char* msg)
     cout.flush();
 
     cin >> opt;
-    if (cin.fail())
+
+    // if cin failed to input into opt or still has chars in the internal buffer
+    if (cin.fail() || cin.peek() != '\n')
     {
-      cin.ignore().clear();
+      cin.clear();
+      cin.ignore(numeric_limits<streamsize>::max(), '\n');
       continue;
     }
     else 
@@ -162,9 +167,19 @@ employee addEmployee(void)
     break;
   }
 
-  string name {};
-  getline(cin, name);
-  emp.setName(name);
+  while (true)
+  {
+    string name {};
+
+    cout << "Input Employee Name: "; 
+    cout.flush();
+    
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getline(cin, name);
+    emp.setName(name);
+
+    if (cin.good()) break;
+  }
 
   while (true)
   {

@@ -44,14 +44,14 @@ invalidEmployeeNumber::invalidEmployeeNumber(unsigned emp_id)
       "Error: invalidEmployeeNumber: id: {}, out of range [0,9999]",
       emp_id)) {}
 
-productionWorker::productionWorker(shift shift, unsigned hr_pay, employee emp)
+productionWorker::productionWorker(shift shift, int hr_pay, employee emp)
   : shift_m(shift), hourly_pay_m(hr_pay), employee(emp) 
 {
   setHourlyPay(hr_pay);
   setShift(shift);
 }
 
-void productionWorker::setHourlyPay(unsigned hr_pay)
+void productionWorker::setHourlyPay(int hr_pay)
 {
   if (isHourlyPayValid(hr_pay))
     hourly_pay_m = hr_pay;
@@ -76,7 +76,7 @@ bool productionWorker::isShiftValid(productionWorker::shift shift)
     return false;
 }
 
-bool productionWorker::isHourlyPayValid(unsigned hr_pay)
+bool productionWorker::isHourlyPayValid(int hr_pay)
 {
   if (hr_pay >= 0)
     return true; 
@@ -103,7 +103,7 @@ invalidShift::invalidShift(productionWorker::shift shift)
       "Error: invalidShift: {} != (DAY=1) or (NIGHT=2)",
       static_cast<int>(shift))) {}
 
-invalidPayRate::invalidPayRate(unsigned hrly_pay)
+invalidPayRate::invalidPayRate(int hrly_pay)
   : hourly_pay_m(hrly_pay), msg(
     format("Error: invalidPayRate: hourly pay: {} is less than 0", hrly_pay)) {}
 

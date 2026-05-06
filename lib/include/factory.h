@@ -84,7 +84,7 @@ public:
   /// constructs a productionWorker. Throws invalidShift if the shift passed 
   /// is not DAY=1 or NIGHT=2 from productionWorker::shift. Throws 
   /// invalidPayRate if the hourly_pay passed is negative.
-  productionWorker(shift shift, unsigned hourly_pay, employee emp);
+  productionWorker(shift shift, int hourly_pay, employee emp);
 
   productionWorker(employee emp): employee(emp) {}
 
@@ -93,7 +93,7 @@ public:
   { return shift_m; }
 
   /// returns the productionWorkers hourly pay
-  inline unsigned getHourlyPay(void) const
+  inline int getHourlyPay(void) const
   { return hourly_pay_m; }
 
   /// sets the shift the productionWorker covers, throws invalidShift if the
@@ -102,20 +102,20 @@ public:
 
   /// sets the hourly pay of the productionWorker, throws invalidPayRate if the
   /// hourly_pay passed is negative.
-  void setHourlyPay(unsigned hourly_pay);
+  void setHourlyPay(int hourly_pay);
 
   /// prints all the productionWorkers data, including the employee data 
   void printProductionWorker(void) const;
 private:
   // shift not declared before 1st pub section. so vars are down here
   shift shift_m;
-  unsigned hourly_pay_m;
+  int hourly_pay_m;
 
   /// returns true if shift is DAY=1, or NIGHT=2, else false is returned.
   static bool isShiftValid(productionWorker::shift shift);
 
   /// returns true if hr_pay isn't negative, else false is returned. 
-  static bool isHourlyPayValid(unsigned hr_pay);
+  static bool isHourlyPayValid(int hr_pay);
 };
 
 class invalidShift: public std::exception {
@@ -132,15 +132,15 @@ public:
 }; 
 
 class invalidPayRate: public std::exception {
-  unsigned hourly_pay_m;
+  int hourly_pay_m;
   std::string msg;
 public:
-  invalidPayRate(unsigned hrly_pay);
+  invalidPayRate(int hrly_pay);
 
   inline const char* what() const noexcept override
   { return msg.c_str(); }
   
-  inline unsigned getHourlyPay(void) const 
+  inline int getHourlyPay(void) const 
   { return hourly_pay_m; }
 };
 
