@@ -1,11 +1,16 @@
 #include "factory.h"
 #include <iostream>
+#include <cstdlib>
 
 using namespace std;
 
 void newEmployee(void);
 
-void printEmployee(void);
+void addProdWorker(void);
+
+void addShiftSupervisor(void);
+
+void addTeamLeader(void);
 
 void sscroll(void);
 
@@ -14,14 +19,13 @@ const char QUIT { 'q' };
 const string main_menu = 
 R"(Factory Employee Manager:
   1) New Employee
-  2) Print Worker Data
-
-  3) Exit
   
-  (input 1-3) : )";
+  2) Exit
+
+  (input 1 or 2) : )";
 
 // exit is defined in multiple menus so namespacing from enum class is needed
-enum class menuOpt { NEW = 1, PRINT, EXIT, };
+enum class menuOpt { NEW = 1, PRINT, EXIT };
 
 int main(void) 
 {
@@ -47,9 +51,8 @@ int main(void)
       newEmployee();
       break;
 
-    case menuOpt::PRINT:
-      printEmployee();
-      break;
+    case menuOpt::EXIT:
+      exit(EXIT_SUCCESS);
 
     default:
       continue;        
@@ -59,19 +62,18 @@ int main(void)
 
 const char* emp_type_menu =
 R"(Pick Employee Type to be Added:
-  1) Employee
-  2) Production Worker
-  3) Shift Supervisor
-  4) Team Leader
+  1) Production Worker
+  2) Shift Supervisor
+  3) Team Leader
 
-  ) Exit
+  4) Exit
 
-  (input 1-4 or q): )";
+  (input 1-4): )";
 
 enum class employeeType 
 { 
-  EMPLOYEE = 1, PRODUCTION_WORKER,
-  SHIFT_SUPERVISOR, TEAM_LEADER, EXIT
+  PRODUCTION_WORKER, SHIFT_SUPERVISOR,
+  TEAM_LEADER, EXIT
 };
 
 void newEmployee(void)
@@ -95,16 +97,25 @@ void newEmployee(void)
 
     switch (static_cast<employeeType>(opt))
     {
-    case employeeType::EMPLOYEE:
+    case employeeType::PRODUCTION_WORKER:
+      addProdWorker();
+      return;
 
-      break;
+    case employeeType::SHIFT_SUPERVISOR:
+      addShiftSupervisor();
+      return;
+
+    case employeeType::TEAM_LEADER:
+      addTeamLeader();
+      return;
+
+    case employeeType::EXIT:
+      exit(EXIT_SUCCESS);
+
+    default:
+      continue;
     }
   }
-}
-
-void printEmployee(void)
-{
-
 }
 
 /// prints 30 lines of whitespace to mimic the screen being wiped. Tried to get
