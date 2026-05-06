@@ -5,16 +5,25 @@
 
 using namespace std;
 
+/// submenu path for option 1 in the main menu
 void newEmployee(void);
 
+/// returns an employee, queries user for all fields in an employee class.
 employee addEmployee(void);
 
+/// returns a productionWorker, queries for all owned values that
+/// make up the returned value.
 productionWorker addProdWorker(void);
 
+/// returns a shiftSupervisor, queries for all owned values that
+/// make up the returned value.
 shiftSupervisor addShiftSupervisor(void);
 
+/// returns a teamLeader, queries for all owned values that
+/// make up the returned value.
 teamLeader addTeamLeader(void);
 
+/// prints 30 lines of whitespace to scroll down the screen. 
 void sscroll(void);
 
 const string main_menu = 
@@ -39,6 +48,7 @@ int main(void)
     cout.flush();
     cin >> opt;
 
+    /// if user doesn't input something valid, reset the stream and query again
     if (!cin) 
     {
       cin.clear();
@@ -55,6 +65,7 @@ int main(void)
     case menuOpt::EXIT:
       exit(EXIT_SUCCESS);
 
+    // if the value parses as an unsigned but isn't valid start over 
     default:
       continue;        
     }
@@ -96,6 +107,8 @@ void newEmployee(void)
       continue;
     }
 
+    // Add* fns return their objects so that the inheriting types can take
+    // advantage of their base's function.
     switch (static_cast<employeeType>(opt))
     {
     case employeeType::PRODUCTION_WORKER:
@@ -119,7 +132,10 @@ void newEmployee(void)
   }
 }
 
-/// T is the type queried for
+/// Typename T: the type inserted into by cin
+/// msg: the message outputted to stdout
+///
+/// Queries the user for a value of type T with the message msg.
 template<typename T>
 T query(const char* msg)
 {
@@ -152,6 +168,8 @@ employee addEmployee(void)
 
   sscroll();
 
+  // checks for exceptions and continuosly queries until a valid value is
+  // recieved
   while (true)
   {
     try 
@@ -167,6 +185,8 @@ employee addEmployee(void)
     break;
   }
 
+  // checks for exceptions and continuosly queries until a valid value is
+  // recieved
   while (true)
   {
     string name {};
@@ -181,6 +201,8 @@ employee addEmployee(void)
     if (cin.good()) break;
   }
 
+  // checks for exceptions and continuosly queries until a valid value is
+  // recieved
   while (true)
   {
     chrono::day day { 
@@ -210,6 +232,8 @@ productionWorker addProdWorker(void)
   employee emp { addEmployee() };
   productionWorker pr_wkr { emp };
 
+  // checks for exceptions and continuosly queries until a valid value is
+  // recieved
   while (true)
   {
     try 
@@ -229,6 +253,8 @@ productionWorker addProdWorker(void)
     break;
   }
 
+  // checks for exceptions and continuosly queries until a valid value is
+  // recieved
   while (true)
   {
     try
@@ -279,8 +305,6 @@ teamLeader addTeamLeader(void)
   return tl;
 }
 
-/// prints 30 lines of whitespace to mimic the screen being wiped. Tried to get
-/// ANSI sequences on windows last semester and it didn't work.
 void sscroll(void) 
 {
   for (int i {}; i < 10; ++i) cout << '\n';
