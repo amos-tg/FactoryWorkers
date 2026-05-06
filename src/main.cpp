@@ -72,7 +72,7 @@ R"(Pick Employee Type to be Added:
 
 enum class employeeType 
 { 
-  PRODUCTION_WORKER, SHIFT_SUPERVISOR,
+  PRODUCTION_WORKER = 1, SHIFT_SUPERVISOR,
   TEAM_LEADER, EXIT
 };
 
@@ -128,7 +128,7 @@ T query(const char* msg)
     cout.flush();
 
     cin >> opt;
-    if (!cin)
+    if (cin.fail())
     {
       cin.ignore().clear();
       continue;
@@ -162,20 +162,30 @@ employee addEmployee(void)
     break;
   }
 
-  string name { query<string>("Input Employee Name: ") };
+  string name {};
+  getline(cin, name);
   emp.setName(name);
 
-  chrono::day day { 
-    query<unsigned>("Input Employee Hiring Date Day Number: ") };
+  while (true)
+  {
+    chrono::day day { 
+      query<unsigned>("Input Employee Hiring Date Day Number: ") };
 
-  chrono::year year { 
-    query<int>("Input Employee Hiring Date Year Number: ") };
-  
-  chrono::month month { 
-    query<unsigned>("Input Employee Hiring Date Month Number: ") };
+    chrono::year year { 
+      query<int>("Input Employee Hiring Date Year Number: ") };
+    
+    chrono::month month { 
+      query<unsigned>("Input Employee Hiring Date Month Number: ") };
 
-  chrono::year_month_day ymd { year, month, day };
-  emp.setDateHired(ymd);
+    chrono::year_month_day ymd { year, month, day };
+
+    if (ymd.ok())
+    {
+      emp.setDateHired(ymd);
+      break;
+    } 
+    else cerr << "Error: Invalid Date" << endl;
+  }
 
   return emp;
 }
